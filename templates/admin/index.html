@@ -1,0 +1,165 @@
+{% include 'admin/header.html' %}
+
+<div class="page-section section pt-50 pb-50">
+  <div class="container">
+    <div class="col-12 pl-0">
+        <ul class="nav nav-tabs-two">
+            <li><a class="active" data-toggle="tab" href="#ucusyeri">Uçuş Yeri Ekle</a></li>
+            <li><a data-toggle="tab" href="#ucus">Uçuş Ekle</a></li>
+        </ul>
+    </div>
+    <div class="tab-content clearfix pt-20 pb-20 pl-10">
+      <div class="tab-pane active" id="ucusyeri">
+        <form id="contact-form" action="/admin/ucus_yeri" method="post" class="contact-form mb-30">
+            <div class="row">
+                <div class="col-md-4 col-12 mb-5">
+                    <label for="ucus_yeri">Uçuş Yeri *</label>
+                    <input id="ucus_yeri" type="text" name="ucus_yeri" placeholder="Uçuş Yeri" required>
+                </div>
+                <div class="col-md-4 col-12">
+                   <label style="visibility: hidden">Ekle</label>
+                   <button type="submit" class="city-fly mt-10 btn btn-round btn-block">Ekle</button>
+                </div>
+            </div>
+        </form>
+        <hr>
+        <style media="screen">
+          .city-fly {
+              border-radius: 24px;
+              border: none;
+              background-color: #830002;
+              color: #fff;
+              padding: 10px 30px;
+              font-size: 14px;
+              z-index: 0;
+              width: 180px;
+          }
+          .city-fly:hover {
+              color: #FFF !important;
+          }
+          .yer_sil {
+            padding-bottom: 0 !important;
+            padding-top: 0 !important;
+            text-transform: capitalize;
+            outline: none;
+            float: right;
+          }
+          .yer_sil:hover {
+            color: #FFF !important;
+          }
+          .col-lg-3.mt-10.mb-10 {
+            border: solid 1px #d3d3d3;
+          }
+        </style>
+        <div class="row mb-90">
+          {% for yer in ucus_yerleri: %}
+          <div class="col-lg-3 mt-10 mb-10 pt-10 pb-10">
+            <span style="font-size:18px;">{{yer.name}}</span>
+            <a href="/admin/ucus_yeri_sil/{{yer.id}}" class="btn btn-small btn-radius hover-theme yer_sil ml-10 mb-0">Kaldır</a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="tab-pane" id="ucus">
+        <form id="contact-form" action="/admin/ucus_ekle" method="post" class="checkout-form mb-40">
+          <div class="row justify-content-center">
+              <div class="col-lg-3 col-12 mb-0">
+                <label class="pl-10">Nereden</label>
+                <select class="bg-white nice-select" name="nereden" required>
+                  {% for yer in ucus_yerleri: %}
+                 <option value="{{yer.name}}">{{yer.name}}</option>
+                  {% endfor %}
+                 </select>
+               </div>
+               <div class="col-lg-3 col-12 mb-0">
+                  <label class="pl-10">Nereye</label>
+                  <select class="bg-white nice-select" name="nereye" required>
+                   {% for yer in ucus_yerleri: %}
+                   <option value="{{yer.name}}">{{yer.name}}</option>
+                   {% endfor %}
+                 </select>
+               </div>
+               <div class="col-lg-3 col-12 mb-0">
+                 <label class="pl-10">Uçuş Saati</label>
+                 <input type="text" class="bg-white timepicker" placeholder="HH:ii" name="saat" autocomplete="off" required>
+               </div>
+              <div class="col-lg-3 col-12 mb-0">
+                <label class="pl-10">Uçuş Fiyatı</label>
+                <input type="number" class="bg-white" placeholder="Uçuş Fiyatı Yazınız" name="fiyat" autocomplete="off" required>
+               </div>
+               <div class="col-lg-4 col-12 text-center">
+                   <style>
+                         .home-fly {
+                             border-radius: 24px;
+                             border: none;
+                             background-color: #830002;
+                             color: #fff;
+                             padding: 10px 30px;
+                             font-size: 14px;
+                             z-index: 0;
+                         }
+                         .home-fly:hover {
+                             color: #FFF !important;
+                         }
+                   </style>
+                   <button type="submit" class="home-fly mt-10 btn btn-round btn-block">Uçuş Ekle</button>
+               </div>
+          </div>
+        </form>
+        <hr>
+        <form class="contact-form mt-20 mb-20">
+           <input id="input_ucus" type="text" onkeyup="myFunction()" placeholder="Nereden - Nereye Göre Arama...">
+        </form>
+        <div class="cart-table table-responsive mb-40">
+          <table class="table" id="UcusTable">
+              <thead>
+                  <tr>
+                      <th class="pro-thumbnail pro-title">Nereden - Nereye</th>
+                      <th class="pro-price">Saat</th>
+                      <th class="pro-subtotal">Fiyat</th>
+                      <th class="pro-remove"></th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for ucus in ucuslar: %}
+                  <tr class="sepet_sayfa_urun{{ucus}}">
+                      <td class="pro-thumbnail pro-title">{{ucus.departure}} - {{ucus.arrival}}</td>
+                      <td class="pro-price"><span>{{ucus.time}}</span></td>
+                      <td class="pro-price"><span>₺{{ucus.price}}</span></td>
+                      <td class="pro-remove"><a href="/admin/ucus_sil/{{ucus.id}}"><i class="fa fa-trash-o"></i> Sil</a></td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
+</div>
+{% include 'admin/footer.html' %}
+<script>
+$('.main-menu .admin').addClass('active');
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("input_ucus");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("UcusTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>

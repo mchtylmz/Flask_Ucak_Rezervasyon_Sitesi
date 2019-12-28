@@ -1,0 +1,106 @@
+{% include 'header.html' %}
+<style media="screen">
+  th.pro-remove a {
+    text-transform: capitalize;
+  }
+  th.pro-remove a:hover {
+    color:red !important;
+  }
+</style>
+<!-- Page Banner Section Start -->
+<div class="page-banner-section section">
+        <div class="page-banner-wrap row row-0 d-flex align-items-center ">
+
+            <!-- Page Banner -->
+            <div class="col-lg-12 col-12 order-lg-2 d-flex align-items-center justify-content-center">
+                <div class="page-banner">
+                    <h1>Rezervasyonlar</h1>
+                </div>
+            </div>
+
+        </div>
+    </div><!-- Page Banner Section End -->
+<!-- Cart Page Start -->
+<div class="page-section section pt-90 pb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- Cart Table -->
+                <div class="cart-table table-responsive mb-40">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="pro-thumbnail pro-title">Nereden - Nereye</th>
+                                <th class="pro-price">Tarih - Saat</th>
+                                <th class="pro-subtotal">Fiyat</th>
+                                <th class="pro-remove"><a href="/sepet_tumsil"><i class="fa fa-trash-o"></i> Tümünü Sil</a></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% if ucuslarim %}
+                            {% for ucus in ucuslarim %}
+                            {% if (simdi - ucuslarim[ucus]['eklenme'] < 601) %}
+                            <tr class="sepet_sayfa_urun{{ucus}}">
+                                <td class="pro-thumbnail pro-title">{{ucuslarim[ucus]['nereden']}} - {{ucuslarim[ucus]['nereye']}}</td>
+                                <td class="pro-price"><span>{{ucuslarim[ucus]['tarihsaat']}}</span></td>
+                                <td class="pro-price"><span>₺{{ucuslarim[ucus]['fiyat']}}</span></td>
+                                <td class="pro-remove"><a onclick="sepettenCikar('{{ucus}}')"><i class="fa fa-trash-o"></i> Sil</a></td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                          {% else %}
+                          <tr>
+                              <td class="pro-thumbnail pro-title" colspan="4">Sepette Uçuş Bulunamadı!..</td>
+                          </tr>
+                          {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-6 col-12 mb-40">
+                      {% if bonus.puan != '-1': %}
+                      <!-- Discount Coupon -->
+                      <div class="discount-coupon">
+                          <h4>Bonus Puanlarım (₺{{bonus.puan - bonus.harcanan}})</h4>
+                          <form action="/bonus_uygula" method="post">
+                              <div class="row">
+                                  <div class="col-md-6 col-12 mb-25">
+                                      <input type="text" placeholder="Bonus Puanı" name="bonus_puan" value="{{bonus.puan - bonus.harcanan}}">
+                                  </div>
+                                  <div class="col-md-6 col-12 mb-25">
+                                      <input type="submit" value="Uygula">
+                                  </div>
+                              </div>
+                          </form>
+                          {% if bonus.harcanan != 0: %}
+                          <h4 class="text-danger" style="text-decoration:none; font-size: 16px;">* ₺{{bonus.harcanan}} Bonus Uygulandı</h4>
+                          {% endif %}
+                      </div>
+                      {% endif %}
+                    </div>
+
+                    <!-- Cart Summary -->
+                    <div class="col-lg-6 col-12 mb-40 d-flex">
+                        <div class="cart-summary">
+                            <div class="cart-summary-wrap">
+                                <p class="sepet_toplam">Toplam <span></span></p>
+                                <p class="bonus">Bonus Puan <span>₺{{bonus.harcanan}}</span></p>
+                                <h2 class="odenecek">Ödenecek Tutar <span></span></h2>
+                            </div>
+                            <div class="cart-summary-button">
+                                <button class="checkout-btn" onclick="window.location.href='/odeme'">Rezervasyonu Tamamla</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cart Page End -->
+
+{% include 'footer.html' %}

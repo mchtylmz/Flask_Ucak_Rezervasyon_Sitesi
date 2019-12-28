@@ -1,0 +1,58 @@
+{% include 'admin/header.html' %}
+
+<div class="page-section section pt-50 pb-50">
+  <div class="container">
+    <form class="contact-form mb-20">
+       <input id="input_bonus" type="text" onkeyup="myFunction()" placeholder="Yolcu Adına Göre Arama...">
+    </form>
+     <div class="cart-table table-responsive mb-40">
+       <table class="table" id="BonusTable">
+         <thead>
+             <tr>
+                 <th class="pro-thumbnail">ID</th>
+                 <th class="pro-thumbnail pro-title">Açıklama</th>
+                 <th class="pro-price">Tarih</th>
+                 <th class="pro-subtotal">Bonus</th>
+                 <th class="pro-subtotal">Yolcu</th>
+                 <th class="pro-remove"></th>
+             </tr>
+         </thead>
+         <tbody>
+           {% for bonus in bonuslar %}
+           <tr>
+               <td class="pro-thumbnail">BN-{{bonus.id}}</td>
+               <td class="pro-thumbnail pro-title">{{bonus.name}}</td>
+               <td class="pro-price"><span>{{bonus.datetime}}</span></td>
+               <td class="pro-subtotal"><span>₺{{bonus.win}}</span></td>
+               <td class="pro-subtotal"><span>{{bonus.passenger_name}}</span></td>
+               <td class="pro-remove"><a href="/admin/bonus_sil/{{bonus.id}}"><i class="fa fa-trash-o"></i> Sil</a></td>
+           </tr>
+           {% endfor %}
+         </tbody>
+       </table>
+     </div>
+
+  </div>
+</div>
+{% include 'admin/footer.html' %}
+<script>
+$('.main-menu .admin_bonus').addClass('active');
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("input_bonus");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("BonusTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[4];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>

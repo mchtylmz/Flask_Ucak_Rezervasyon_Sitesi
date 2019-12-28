@@ -1,0 +1,55 @@
+{% include 'header.html' %}
+<!-- Page Banner Section Start -->
+<div class="page-banner-section section">
+    <div class="page-banner-wrap row row-0 d-flex align-items-center ">
+
+        <!-- Page Banner -->
+        <div class="col-lg-12 col-12 order-lg-2 d-flex align-items-center justify-content-center">
+            <div class="page-banner">
+                <h1>Bonuslarım</h1>
+                <p>Toplam ₺{{sum}} Bonus</p>
+            </div>
+        </div>
+
+    </div>
+</div><!-- Page Banner Section End -->
+
+<!-- Login Section Start -->
+<div class="login-section section mt-40 mb-40">
+    <div class="container">
+      <!-- Cart Table -->
+      <div class="cart-table table-responsive mb-40">
+          <table class="table">
+              <thead>
+                  <tr>
+                      <th class="pro-thumbnail">ID</th>
+                      <th class="pro-thumbnail pro-title">Açıklama</th>
+                      <th class="pro-price">Tarih</th>
+                      <th class="pro-subtotal">Bonus</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% if bonuslar %}
+                {% for bonus in bonuslar %}
+                <tr>
+                    <td class="pro-thumbnail">BN-{{bonus.id}}</td>
+                    <td class="pro-thumbnail pro-title">{{bonus.name}}</td>
+                    <td class="pro-price"><span>{{bonus.datetime}}</span></td>
+                    <td class="pro-subtotal"><span>₺{{bonus.win}}</span></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td class="pro-thumbnail pro-title" colspan="4">₺0 Bonus Puan</td>
+                </tr>
+                {% endif %}
+              </tbody>
+          </table>
+      </div>
+    </div>
+</div><!-- Login Section End -->
+{% include 'footer.html' %}
+<script>
+$('.main-menu .hesabim').addClass('active');
+$('.main-menu .hesabim .bonus').addClass('active');
+</script>

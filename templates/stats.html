@@ -1,0 +1,97 @@
+{% include 'header.html' %}
+<style media="screen">
+  .city-fly {
+      border-radius: 24px;
+      border: none;
+      background-color: #830002;
+      color: #fff;
+      padding: 10px 30px;
+      font-size: 14px;
+      z-index: 0;
+      width: 180px;
+  }
+  .city-fly:hover {
+      color: #FFF !important;
+  }
+</style>
+<!-- Login Section Start -->
+<div class="login-section section mt-40 mb-70">
+    <div class="container">
+      <form id="contact-form" action="/ucus-bilgi" method="post" class="contact-form mb-30">
+          <div class="row">
+              <div class="col-md-4 col-12 mb-5">
+                  <label for="bilgi_tarih">Tarih Seçiniz *</label>
+                  <input id="bilgi_tarih" class="datepicker2" type="text" name="bilgi_tarih" value="{{day}}" required>
+              </div>
+              <div class="col-md-4 col-12">
+                 <label style="visibility: hidden">Tarih</label>
+                 <button type="submit" class="city-fly btn btn-round">Görüntüle</button>
+              </div>
+          </div>
+      </form>
+      <hr>
+      <div class="row mt-30">
+        <div class="col-lg-6">
+          <div class="cart-table table-responsive mb-40">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="pro-thumbnail pro-title">Kalkış Yeri</th>
+                        <th class="pro-price">Yolcu Sayısı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% if arrival %}
+                  {% for arr in arrival: %}
+                  <tr>
+                      <td class="pro-thumbnail pro-title">{{arr[1]}}</td>
+                      <td class="pro-price"><span>{{arr[0]}}</span></td>
+                  </tr>
+                  {% endfor %}
+                  {% else %}
+                  <tr>
+                      <td class="pro-thumbnail pro-title" colspan="2">Yolcu Bulunamadı!..</td>
+                  </tr>
+                  {% endif %}
+                </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="cart-table table-responsive mb-40">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="pro-thumbnail pro-title">Varış Yeri</th>
+                        <th class="pro-price">Yolcu Sayısı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% if departure %}
+                  {% for dpr in departure: %}
+                  <tr>
+                      <td class="pro-thumbnail pro-title">{{dpr[1]}}</td>
+                      <td class="pro-price"><span>{{dpr[0]}}</span></td>
+                  </tr>
+                  {% endfor %}
+                  {% else %}
+                  <tr>
+                      <td class="pro-thumbnail pro-title" colspan="2">Yolcu Bulunamadı!..</td>
+                  </tr>
+                  {% endif %}
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+</div><!-- Login Section End -->
+{% include 'footer.html' %}
+<script type="text/javascript">
+  $('.datepicker2').datepicker({
+      autoclose: true,
+      format: 'dd.mm.yyyy',
+      todayHighlight: true,
+      language: 'tr'
+  });
+</script>

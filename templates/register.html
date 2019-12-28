@@ -1,0 +1,55 @@
+{% include 'header.html' %}
+{% if request.path != '/kayit' %}
+<meta http-equiv="refresh" content="0; URL=/kayit?next={{ request.args.get('next', '/') }}" />
+{% endif %}
+<!-- Login Section Start -->
+<div class="login-section section mt-50 mb-50">
+    <div class="container">
+
+        <div class="row justify-content-center row-center">
+
+            <div class="col-md-3 col-12 d-flex"></div>
+
+            <!-- Login -->
+            <div class="col-md-5 col-12 d-flex text-center">
+
+                <div class="ee-login">
+                    <h3>Kayıt Ol</h3>
+                    {% if request.path == '/kayit' %}
+                    {% if 'type' in durum.keys() %}
+                    <div class="alert alert-{{durum['type']}} mt-10 mb-0">
+                      {{durum['msg']}}
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                    <!-- Login Form -->
+                    <form action="{{ url_for('kayit') }}" method="post">
+                        <div class="row">
+                            <div class="col-lg-12 col-12 mb-20">
+                                <input type="text" placeholder="Adınız Soyadınız" name="name" required>
+                            </div>
+                            <div class="col-12 mb-20">
+                                <input type="email" placeholder="Eposta Adresiniz" name="email" tabindex="210" required>
+                            </div>
+                            <div class="col-12 mb-20">
+                                <input type="password" placeholder="Şifrenizi Yazınız" name="password" tabindex="230" autocomplete="off" required>
+                            </div>
+                            <div class="col-12 mb-20">
+                                <input type="password" placeholder="Tekrar Şifrenizi Yazınız" name="retype_password" tabindex="240" autocomplete="off" required>
+                            </div>
+                            <div class="col-12 text-center">
+                                <input type="submit" value="Kayıt Ol" name="submit">
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="col-md-3 col-12 d-flex"></div>
+
+        </div>
+    </div>
+</div><!-- Login Section End -->
+
+{% include 'footer.html' %}

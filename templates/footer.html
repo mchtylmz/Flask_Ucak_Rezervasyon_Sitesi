@@ -1,0 +1,205 @@
+
+<!-- Footer Section Start -->
+<div class="footer-section section bg-ivory">
+
+    <!-- Footer Top Section Start -->
+    <div class="footer-top-section section pt-40 pb-40">
+        <div class="container">
+
+            <!-- Footer Widget Start -->
+            <div class="row">
+                <div class="col mb-40">
+                    <div class="footer-widget text-center">
+                        <div class="footer-logo">
+                            <img src="/static/images/logo.png" alt="Flask FLY Mücahit YILMAZ">
+                        </div>
+                        <p>Bir sonraki yolculuğunuz nereye ?</p>
+                    </div>
+                </div>
+            </div><!-- Footer Widget End -->
+
+            <div class="row">
+
+                <!-- Footer Widget Start -->
+                <div class="col-lg-4 col-md-4 col-12 mb-40">
+                    <div class="footer-widget">
+
+                        <p class="contact-info">
+                            <span>Adres</span>
+                            Adres Bilgisi
+                        </p>
+
+                        <p class="contact-info">
+                            <span>Müşteri Hizmetleri</span>
+                            <a href="tel:0850 000 00 00">0850 000 00 00</a>
+                        </p>
+
+                        <p class="contact-info">
+                            <span>Eposta Adresimiz</span>
+                            <a href="mailto:mail@mail.com">mail@mail.com</a>
+                        </p>
+
+                    </div>
+                </div><!-- Footer Widget End -->
+
+                <!-- Footer Widget Start -->
+                <div class="col-lg-4 col-md-4 col-12 mb-40">
+                    <div class="footer-widget">
+
+                        <ul class="link-widget">
+                          <li><a href="/">Anasayfa</a></li>
+                          <li><a href="/giris">Giriş Yap</a></li>
+                          <li><a href="/kayit">Kayıt Ol</a></li>
+                          <li><a href="/ucus-bilgi">Uçuş İstatistikleri</a></li>
+                          <li><a href="/iletisim">İletişim</a></li>
+                        </ul>
+
+                    </div>
+                </div><!-- Footer Widget End -->
+
+                <!-- Footer Widget Start -->
+                <div class="col-lg-4 col-md-4 col-12 mb-40">
+                    <div class="footer-widget">
+
+                        <ul class="link-widget">
+                          <li>İstanbul</li>
+                          <li>Ankara</li>
+                          <li>Denizli</li>
+                          <li>İzmir</li>
+                          <li>Antalya</li>
+                        </ul>
+
+                    </div>
+                </div><!-- Footer Widget End -->
+
+            </div>
+
+        </div>
+    </div><!-- Footer Bottom Section Start -->
+
+    <!-- Footer Bottom Section Start -->
+    <div class="footer-bottom-section section">
+        <div class="container">
+            <div class="row">
+
+                <!-- Footer Copyright -->
+                <div class="col-lg-12 col-12">
+                    <div class="footer-copyright text-center"><p>&copy; Copyright, 2019 Tüm Hakları Saklıdır | Mücahit YILMAZ</p></div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Footer Bottom Section Start -->
+
+</div><!-- Footer Section End -->
+
+<!-- JS ============================================ -->
+<!-- jQuery JS -->
+<script src="/static/js/vendor/jquery-1.12.4.min.js"></script>
+<!-- Popper JS -->
+<script src="/static/js/popper.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="/static/js/bootstrap.min.js"></script>
+<!-- Plugins JS -->
+<script src="/static/js/plugins.js"></script>
+<script src="/static/js/bootstrap-datepicker.min.js"></script>
+<script src="/static/js/bootstrap-datepicker.tr.min.js"></script>
+<!-- Main JS -->
+<script src="/static/js/main.js"></script>
+<script type="text/javascript">
+  $(window).on("load", function (e) {
+      console.log('yükleniyor');
+      $('#status').fadeOut();
+      $('#preloader').delay(250).fadeOut('slow');
+      $('body').delay(250).css({'overflow':'visible'});
+  })
+</script>
+<script type="text/javascript">
+  $('.datepicker').datepicker({
+      autoclose: true,
+      format: 'dd.mm.yyyy',
+      startDate: "today",
+      todayHighlight: true,
+      language: 'tr'
+  });
+  function sepeteEkle(id){
+    console.log(id);
+    if ( $( ".sepet_durum"+id ).hasClass( "added" ) ) {
+      sepettenCikar(id);
+    } else {
+      var saat = $('input[name=ucak_saati'+id+']').length ?  $('input[name=ucak_saati'+id+']').val(): '00:00';
+      var fiyat = $('input[name=ucak_fiyat'+id+']').length ? parseFloat($('input[name=ucak_fiyat'+id+']').val()) : 0;
+      $.post("/sepete_ekle/"+id,
+      {
+        id: parseInt(id),
+        nereden: '{{nereden}}',
+        nereye: '{{nereye}}',
+        tarih: '{{ucak_tarih}}',
+        saat: saat,
+        fiyat: fiyat
+      },
+      function(data, status){
+        if (data == 'eklendi') {
+          setTimeout(function(){
+             headerSepetListele();
+          }, 250);
+        }
+      });
+    }
+  }
+  function sepettenCikar(id){
+    console.log(id);
+    $.post("/sepetten_cikar/"+id,
+    {
+      id: parseInt(id),
+    },
+    function(data, status){
+      if (data == 'silindi') {
+        setTimeout(function(){
+          headerSepetListele();
+          $('.sepet_sayfa_urun'+id).remove();
+          $(".sepet_durum"+id).removeClass('added').find('i').removeClass('icofont-ui-check').addClass('icofont-airplane-alt').siblings('span').text('sepete ekle');
+        }, 250);
+      }
+    });
+  }
+  function headerSepetListele(){
+    var sepet_sayi = 0;
+    var sepet_toplam = 0;
+    $('.mini-cart-products').html('');
+    $.post("/sepet_listele",function(data, status){
+      $.each( data.rezervasyonlar, function( key, value ) {
+        var unixTime = parseInt(String(new Date().getTime()).substring(0, 10));
+        if ( unixTime - parseInt(value['eklenme']) > 601) {
+          sepettenCikar(value['id']);
+        } else {
+          sepet_toplam += parseFloat(value['fiyat']);
+          $('.mini-cart-products').append('<li class="sepet_urun_sil'+value['id']+'" style="border-bottom: solid 1px #eee;">'
+              +'<div class="content">'
+                  +'<a class="title">'+value['nereden']+' - '+value['nereye']+'</a>'
+                  +'<span class="qty">'+value['tarihsaat']+'</span>'
+                  +'<span class="price pb-10">Toplam: ₺'+ parseFloat(value['fiyat']) +'</span>'
+                  +'</div>'
+              +"<button class=\"remove\" onclick=\"sepettenCikar('"+value['id']+"')\"><i class=\"fa fa-trash-o\"></i></button>"
+          +'</li>');
+          sepet_sayi += 1;
+        }
+      });
+      $('.header-cart span').text(sepet_sayi);
+      $('.sub-total span').text('₺'+sepet_toplam);
+
+      $('.cart-summary-wrap .sepet_toplam span').text('₺'+sepet_toplam);
+      son_sepet_toplam = sepet_toplam;
+      $('.cart-summary-wrap .odenecek span').text('₺'+son_sepet_toplam);
+      $('.checkout-cart-total .odenecek span').text('₺'+son_sepet_toplam);
+
+      if (parseInt(data.bonus.harcanan) > 0 && parseInt(data.bonus.puan) > 0 && son_sepet_toplam > 0) {
+        son_sepet_toplam = son_sepet_toplam - parseInt(data.bonus.harcanan);
+        $('.cart-summary-wrap .odenecek span').text('₺'+son_sepet_toplam);
+        $('.checkout-cart-total .odenecek span').text('₺'+son_sepet_toplam);
+      }
+    });
+  }
+  headerSepetListele();
+</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{% include 'header.html' %}
+{% if request.path != '/giris' %}
+<meta http-equiv="refresh" content="0; URL=/giris?next={{ request.args.get('next', '/') }}" />
+{% endif %}
+<!-- Login Section Start -->
+<div class="login-section section mt-50 mb-50">
+    <div class="container">
+        <div class="row justify-content-center row-center">
+
+            <div class="col-md-3 col-12 d-flex"></div>
+
+            <!-- Login -->
+            <div class="col-md-5 col-12 d-flex text-center">
+                <div class="ee-login">
+                    <h3>Giriş Yap</h3>
+                    {% if request.path == '/giris' %}
+                    {% if 'type' in durum.keys() %}
+                    <div class="alert alert-{{durum['type']}} mt-10 mb-0">
+                      {{durum['msg']}}
+                    </div>
+                    {% endif %}
+
+                    {% if 'kayit' in request.args: %}
+                    <div class="alert alert-success mb-0 mt-10">
+                      Başarıyla kayıt olundu, Giriş yapabilirsiniz
+                    </div>
+                    {% endif %}
+
+                    {% endif %}
+                    <!-- Login Form -->
+                    <form action="{{ url_for('giris') }}" method="post">
+                        <div class="row">
+                            <div class="col-12 mb-20">
+                                <input type="text" placeholder="Eposta Adresiniz" name="email" required>
+                            </div>
+                            <div class="col-12 mb-20">
+                                <input type="password" placeholder="Şifreniz" name="password" autocomplete="off" required>
+                            </div>
+                            <input type="hidden" name="next" value="{{ request.args.get('next', '/hesabim') }}">
+                            <div class="col-12 text-center">
+                                <input type="submit" value="Giriş Yap">
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+            <div class="col-md-3 col-12 d-flex"></div>
+
+        </div>
+    </div>
+</div><!-- Login Section End -->
+
+{% include 'footer.html' %}

@@ -1,0 +1,75 @@
+{% include 'header.html' %}
+
+<div class="subscribe-section section bg-gray pt-70 pb-70" style="background-image: url('/static/images/bg/bolu.jpg');">
+        <div class="container">
+            <div class="row align-items-center justify-content-center pl-20 pr-20">
+
+                <div class="col-lg-6 col-12 mb-30 mt-30">
+                    <div class="subscribe-content text-center">
+                        <h2 class="text-white"><span>Merhaba, {{user}}</span></h2>
+                        <h2 class="text-white"> Bir sonraki yolculuğunuz nereye ?</h2>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-12 mb-50 mt-10">
+                    <div class="pt-20 pb-20">
+
+                        <form action="/ucuslar" method="POST" class="checkout-form" style="max-width: 100%">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-3 col-12 mb-0">
+                                  <label class="text-white pl-10">Nereden</label>
+                                  <select class="bg-white nice-select" name="nereden" required>
+                                    {% for yer in ucus_yerleri: %}
+                                    <option value="{{yer.name}}">{{yer.name}}</option>
+                                    {% endfor %}
+                                   </select>
+                                 </div>
+                                 <div class="col-lg-3 col-12 mb-0">
+                                    <label class="text-white pl-10">Nereye</label>
+                                    <select class="bg-white nice-select" name="nereye" required>
+                                      {% for yer in ucus_yerleri: %}
+                                      <option value="{{yer.name}}">{{yer.name}}</option>
+                                      {% endfor %}
+                                   </select>
+                                 </div>
+                                 <div class="col-lg-3 col-12 mb-0">
+                                   <label class="text-white pl-10">Uçuş Tarihi</label>
+                                   <input type="text" class="bg-white datepicker" placeholder="GG/AA/YYYY" name="tarih" autocomplete="off" required>
+                                 </div>
+                                <div class="col-lg-3 col-12 mb-0">
+                                  <label class="text-white pl-10">Bilet Türü</label>
+                                  <select class="bg-white nice-select" name="bilet_turu" required>
+                                        <option value="0">Economy Class</option>
+                                        <option value="1">Business Class</option>
+                                   </select>
+                                 </div>
+                                 <div class="col-lg-4 col-12 text-center">
+                                     <style>
+                                           .home-fly {
+                                               border-radius: 24px;
+                                               border: none;
+                                               background-color: #830002;
+                                               color: #fff;
+                                               padding: 10px 30px;
+                                               font-size: 14px;
+                                           }
+                                           .home-fly:hover {
+                                               color: #FFF !important;
+                                           }
+                                     </style>
+                                     <button type="submit" class="home-fly mt-10 btn btn-round btn-block">Uçuş Ara</button>
+                                 </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% include 'footer.html' %}
+<script>
+$('.main-menu .anasayfa').addClass('active');
+</script>

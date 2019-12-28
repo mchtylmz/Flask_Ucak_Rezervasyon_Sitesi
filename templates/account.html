@@ -1,0 +1,89 @@
+{% include 'header.html' %}
+<!-- Page Banner Section Start -->
+<div class="page-banner-section section">
+    <div class="page-banner-wrap row row-0 d-flex align-items-center ">
+
+        <!-- Page Banner -->
+        <div class="col-lg-12 col-12 order-lg-2 d-flex align-items-center justify-content-center">
+            <div class="page-banner">
+                <h1>Hesabım</h1>
+                <p>Hoş Geldiniz {{current_user.name}}</p>
+            </div>
+        </div>
+
+    </div>
+</div><!-- Page Banner Section End -->
+
+<!-- Login Section Start -->
+<div class="login-section section mt-40 mb-40">
+    <div class="container pt-20 pb-20">
+      {% if 'admin_yetkisiz' in request.args: %}
+      <div class="alert alert-danger mb-30 mt-30">
+        Admin sayfasına giriş yapamazsınız, yeterli yetkiye sahip değilsiniz!
+      </div>
+      {% endif %}
+
+      <div class="row justify-content-center">
+        <style media="screen">
+          .col-lg-3, .col-lg-2 {
+            border: solid 2px #eee;
+            box-sizing: border-box;
+            margin: 10px;
+            padding: 35px 10px 15px 10px;
+            border-radius: 12px;
+          }
+          .col-lg-3 a, .col-lg-2 a {
+            width: 100%;
+          }
+          .hesab_icon {
+            padding: 10px;
+            background-color: #eee;
+            border-radius: 40%;
+          }
+          a:hover {
+            color:#000
+          }
+          .adminbg {
+            background-color: rgba(238, 238, 238, 0.25);
+          }
+        </style>
+        <div class="col-lg-3 text-center">
+          <a class="title" href="/hesabim/gelecek">
+            <i class="icofont icofont-airplane-alt icofont-3x hesab_icon"></i>
+            <h4 class="mt-20">Gelecek Uçuşlarım</h4>
+          </a>
+        </div>
+
+        <div class="col-lg-3 text-center">
+          <a class="title" href="/hesabim/gecmis">
+            <i class="icofont icofont-airplane icofont-3x hesab_icon"></i>
+            <h4 class="mt-20">Geçmiş Uçuşlarım</h4>
+          </a>
+        </div>
+
+        <div class="col-lg-3 text-center">
+          <a class="title" href="/hesabim/bonus">
+            <i class="icofont icofont-money icofont-3x hesab_icon"></i>
+            <h4 class="mt-20">Bonuslarım</h4>
+          </a>
+        </div>
+
+        {% if current_user.roles[0] or none: %}
+          {% if current_user.roles[0]['name'] == 'Admin': %}
+          <div class="col-lg-2 text-center adminbg">
+            <a class="title" href="/admin">
+              <i class="icofont icofont-ui-unlock icofont-3x hesab_icon"></i>
+              <h4 class="mt-20">Admin Sayfası</h4>
+            </a>
+          </div>
+          {% endif %}
+        {% endif %}
+
+      </div>
+
+    </div>
+</div><!-- Login Section End -->
+{% include 'footer.html' %}
+<script>
+$('.main-menu .hesabim').addClass('active');
+</script>
